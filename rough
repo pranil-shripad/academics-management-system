@@ -1,0 +1,9 @@
+Schema |              Name              |   Type   |  Owner
+--------+--------------------------------+----------+----------
+ public | assignments                    | table    | postgres
+ public | courses                        | table    | postgres
+ public | documents                      | table    | postgres
+ public | performance                    | table    | postgres
+ public | studentgrades                  | view     | postgres
+ public | submissions                    | table    | postgres
+ public | users                          | table    | postgres

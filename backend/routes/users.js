@@ -1,9 +1,9 @@
-const express = require("express");
+import express from "express";
+import { authenticate } from "../middleware/auth.js";
+import { getMe } from "../controllers/userController.js";
+
 const router = express.Router();
-const userController = require("../controllers/userController");
-const { authenticateToken, authorizeRole } = require("../middleware/auth");
 
-// Only admin can access all users
-router.get("/", authenticateToken, authorizeRole("admin"), userController.getAllUsers);
+router.get("/me", authenticate, getMe);
 
-module.exports = router;
+export default router;

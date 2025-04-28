@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
+import { getAssignments, createAssignment } from "../controllers/assignmentController.js";
+import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
-const controller = require("../controllers/assignmentController");
-const { authenticateToken, authorizeRole } = require("../middleware/auth");
 
-router.get("/", authenticateToken, controller.getAssignments);
-router.post("/", authenticateToken, authorizeRole("teacher"), controller.createAssignment);
+router.get("/", getAssignments);
+router.post("/", protect, authorizeRoles("teacher"), createAssignment);
 
-module.exports = router;
+export default router;

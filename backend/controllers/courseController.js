@@ -1,23 +1,15 @@
-const pool = require("../db");
+import { db } from "../db/index.js";
 
-exports.getCourses = async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM Courses");
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+export const getCourses = async (req, res) => {
+  const { rows } = await db.query("SELECT * FROM courses");
+  res.json(rows);
 };
 
-exports.createCourse = async (req, res) => {
-  const { course_name, professor_id } = req.body;
-  try {
-    const result = await pool.query(
-      "INSERT INTO Courses (course_name, professor_id) VALUES ($1, $2) RETURNING *",
-      [course_name, professor_id]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+export const createCourse = async (req, res) => {
+  const { title, description } = req.body;
+  await db.query(
+    "INSERT INTO courses (title, description) VALUES ($1, $2)",
+    [title, description]
+  );
+  res.status(201).json({ message: "Course created" });
 };

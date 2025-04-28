@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
+import { getCourses, createCourse } from "../controllers/courseController.js";
+import { protect, authorizeRoles } from "../middleware/authMiddleware.js";
+
 const router = express.Router();
-const controller = require("../controllers/courseController");
-const { authenticateToken, authorizeRole } = require("../middleware/auth");
 
-router.get("/", authenticateToken, controller.getCourses);
-router.post("/", authenticateToken, authorizeRole("admin"), controller.createCourse);
+router.get("/", getCourses);
+router.post("/", protect, authorizeRoles("admin"), createCourse);
 
-module.exports = router;
+export default router;

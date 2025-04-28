@@ -1,60 +1,23 @@
-import { useEffect, useState } from "react";
-import API from "../api";
+import React from "react";
+import { Link } from "react-router-dom";
 
-export default function StudentDashboard() {
-  const [assignments, setAssignments] = useState([]);
-  const [submission, setSubmission] = useState({ assignment_id: "", file_path: "" });
-
-  useEffect(() => {
-    API.get("/assignments").then((res) => setAssignments(res.data));
-  }, []);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    await API.post("/submissions", submission);
-    setSubmission({ assignment_id: "", file_path: "" });
-    alert("Submitted!");
-  };
-
+const StudentDashboard = () => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Student Dashboard</h1>
-
-      <form onSubmit={handleSubmit} className="mb-6 flex gap-2 flex-wrap">
-        <select
-          className="border px-3 py-1 rounded"
-          value={submission.assignment_id}
-          onChange={(e) => setSubmission({ ...submission, assignment_id: e.target.value })}
-          required
-        >
-          <option value="">Select Assignment</option>
-          {assignments.map((a) => (
-            <option key={a.assignment_id} value={a.assignment_id}>
-              {a.title}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          placeholder="File Path / URL"
-          className="border px-3 py-1 rounded"
-          value={submission.file_path}
-          onChange={(e) => setSubmission({ ...submission, file_path: e.target.value })}
-          required
-        />
-        <button className="bg-purple-500 text-white px-4 py-1 rounded">Submit</button>
-      </form>
-
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Available Assignments</h2>
-        <ul className="space-y-2">
-          {assignments.map((a) => (
-            <li key={a.assignment_id} className="p-3 border rounded bg-gray-100">
-              {a.title} (Due: {a.due_date})
-            </li>
-          ))}
-        </ul>
+    <div className="p-8">
+      <h1 className="text-3xl font-bold mb-6">Student Dashboard</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Link to="/student/assignments" className="bg-indigo-500 text-white p-6 rounded-lg text-center hover:bg-indigo-600">
+          View Assignments
+        </Link>
+        <Link to="/student/submissions" className="bg-green-500 text-white p-6 rounded-lg text-center hover:bg-green-600">
+          View Submissions
+        </Link>
+        <Link to="/student/performance" className="bg-pink-500 text-white p-6 rounded-lg text-center hover:bg-pink-600">
+          View Performance
+        </Link>
       </div>
     </div>
   );
-}
+};
+
+export default StudentDashboard;

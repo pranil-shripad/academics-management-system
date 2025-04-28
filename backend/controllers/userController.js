@@ -1,10 +1,10 @@
-const pool = require("../db");
+import { db } from "../db/index.js";
 
-exports.getAllUsers = async (req, res) => {
+export const getMe = async (req, res, next) => {
   try {
-    const result = await pool.query("SELECT user_id, name, email, role FROM Users");
-    res.json(result.rows);
+    const user = await db.query("SELECT id, name, email, role FROM users WHERE id = $1", [req.user.id]);
+    res.status(200).json(user.rows[0]);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
